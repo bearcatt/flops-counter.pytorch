@@ -366,11 +366,14 @@ def add_flops_counter_hook_function(module):
             handle = module.register_forward_hook(deconv_flops_counter_hook)
         elif isinstance(module, torch.nn.ModuleList):
             for sub_module in module:
-                add_flops_counter_hook_function(module)
+                if is_supported_instance(sub_module):
+                    print(sub_module)
+                    add_flops_counter_hook_function(module)
+                else:
+                    return
         else:
             handle = module.register_forward_hook(empty_flops_counter_hook)
         module.__flops_handle__ = handle
-        return
 
 
 def remove_flops_counter_hook_function(module):
