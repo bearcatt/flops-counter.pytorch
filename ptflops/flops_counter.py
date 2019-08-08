@@ -368,7 +368,7 @@ def add_flops_counter_hook_function(module):
             for sub_module in module:
                 if is_supported_instance(sub_module):
                     print(sub_module)
-                    add_flops_counter_hook_function(module)
+                    add_flops_counter_hook_function(sub_module)
                 else:
                     return
         else:
