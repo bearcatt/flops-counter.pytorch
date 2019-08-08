@@ -370,6 +370,7 @@ def add_flops_counter_hook_function(module):
         else:
             handle = module.register_forward_hook(empty_flops_counter_hook)
         module.__flops_handle__ = handle
+        return
 
 
 def remove_flops_counter_hook_function(module):
