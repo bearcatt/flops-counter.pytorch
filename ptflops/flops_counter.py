@@ -200,8 +200,7 @@ def is_supported_instance(module):
                            torch.nn.MaxPool1d, torch.nn.AvgPool1d, torch.nn.BatchNorm1d, \
                            nn.AdaptiveMaxPool1d, nn.AdaptiveAvgPool1d, \
                            nn.ConvTranspose2d, torch.nn.BatchNorm3d, \
-                           torch.nn.MaxPool3d, torch.nn.AvgPool3d, nn.AdaptiveMaxPool3d, nn.AdaptiveAvgPool3d, \
-                           torch.nn.ModuleList)):
+                           torch.nn.MaxPool3d, torch.nn.AvgPool3d, nn.AdaptiveMaxPool3d, nn.AdaptiveAvgPool3d)):
         return True
 
     return False
@@ -364,13 +363,6 @@ def add_flops_counter_hook_function(module):
             handle = module.register_forward_hook(upsample_flops_counter_hook)
         elif isinstance(module, torch.nn.ConvTranspose2d):
             handle = module.register_forward_hook(deconv_flops_counter_hook)
-        elif isinstance(module, torch.nn.ModuleList):
-            for sub_module in module:
-                if is_supported_instance(sub_module):
-                    print(sub_module)
-                    add_flops_counter_hook_function(sub_module)
-                else:
-                    return
         else:
             handle = module.register_forward_hook(empty_flops_counter_hook)
         module.__flops_handle__ = handle
